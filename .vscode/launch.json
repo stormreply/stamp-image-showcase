@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "name": "vscode-jest-tests",
+            "request": "launch",
+            "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+            "args": ["--runInBand", "--no-cache", "--coverage=false"],
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart",
+            "disableOptimisticBPs": true
+        },
+        {
+            "name": "StampImageFunction",
+            "type": "node",
+            "request": "attach",
+            "address": "localhost",
+            "port": 5858,
+            "localRoot": "${workspaceRoot}/.aws-sam/build/StampImageFunction",
+            "remoteRoot": "/var/task",
+            "protocol": "inspector",
+            "stopOnEntry": false,
+            "outFiles": ["${workspaceRoot}/.aws-sam/build/StampImageFunction/app.js"],
+            "sourceMaps": true
+        }
+    ]
+}

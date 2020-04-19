@@ -1,0 +1,90 @@
+{
+    "name": "stamp-image",
+    "version": "0.1.0",
+    "bin": {
+        "stamp-image": "bin/index.js"
+    },
+    "scripts": {
+        "build": "npm-run-all --parallel build-cdk build-lambda ",
+        "build:dev": "npm-run-all build-cdk build-lambda:dev ",
+        "build-cdk": "tsc",
+        "build-cdk:watch": "tsc -w",
+        "build-lambda": "webpack-cli",
+        "build-lambda:dev": "NODE_ENV=development npm run-script build-lambda",
+        "build-lambda:watch": "NODE_ENV=development npm run-script build-lambda -- -w",
+        "cdk": "cdk",
+        "cdk:diff": "npm-run-all build 'cdk -- diff'",
+        "cdk:deploy": "npm-run-all build 'cdk -- deploy'",
+        "cdk:synth": "npm-run-all build 'cdk -- synth'",
+        "clean": "rimraf .aws-sam",
+        "format": "prettier --config .prettierrc.js '{bin,lambda,lib,test}/**/*.ts' --write",
+        "git-cz": "npx git-cz",
+        "lint": "tsc --noEmit && eslint '*/**/*.{js,ts}' --quiet",
+        "lint:fix": "npm run lint -- --fix",
+        "prebuild-lambda": "rimraf .aws-sam",
+        "prebuild-lamda:watch": "rimraf .aws-sam",
+        "test": "jest --coverage",
+        "test:watch": "jest --watch",
+        "update-dependencies": "npx npm-check-updates -u && npm i"
+    },
+    "husky": {
+        "hooks": {
+            "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true",
+            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+            "pre-commit": "tsc --noEmit && lint-staged"
+        }
+    },
+    "lint-staged": {
+        "*.{js,ts}": [
+            "prettier --write",
+            "eslint --fix",
+            "jest --findRelatedTests"
+        ]
+    },
+    "config": {
+        "commitizen": {
+            "path": "./node_modules/cz-conventional-changelog"
+        }
+    },
+    "devDependencies": {
+        "@aws-cdk/assert": "1.33.1",
+        "@commitlint/cli": "^8.3.5",
+        "@commitlint/config-conventional": "^8.3.4",
+        "@types/aws-lambda": "^8.10.50",
+        "@types/jest": "^25.2.1",
+        "@types/lambda-tester": "^3.6.0",
+        "@types/node": "^13.13.1",
+        "@typescript-eslint/eslint-plugin": "^2.29.0",
+        "@typescript-eslint/parser": "^2.29.0",
+        "aws-cdk": "1.33.1",
+        "aws-sam-webpack-plugin": "^0.6.0",
+        "commitizen": "^4.0.4",
+        "cz-conventional-changelog": "^3.1.0",
+        "eslint": "^6.8.0",
+        "eslint-config-prettier": "^6.10.1",
+        "eslint-plugin-markdown": "^1.0.2",
+        "eslint-plugin-prettier": "^3.1.3",
+        "eslint-plugin-sonarjs": "^0.5.0",
+        "fork-ts-checker-webpack-plugin": "^4.1.3",
+        "husky": "^4.2.5",
+        "jest": "^25.4.0",
+        "lambda-tester": "^4.0.1",
+        "lint-staged": "^10.1.6",
+        "npm-run-all": "^4.1.5",
+        "prettier": "^2.0.4",
+        "ts-jest": "^25.4.0",
+        "ts-loader": "^7.0.1",
+        "ts-node": "^8.9.0",
+        "typescript": "^3.8.3",
+        "webpack": "^4.42.1",
+        "webpack-cli": "^3.3.11"
+    },
+    "dependencies": {
+        "@aws-cdk/aws-apigateway": "^1.33.1",
+        "@aws-cdk/aws-lambda": "^1.33.1",
+        "@aws-cdk/aws-s3": "^1.33.1",
+        "@aws-cdk/core": "1.33.1",
+        "aws-sdk": "^2.659.0",
+        "source-map-support": "^0.5.17"
+    }
+}
