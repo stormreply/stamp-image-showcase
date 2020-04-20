@@ -39,7 +39,12 @@ module.exports = {
 
     // Add the TypeScript loader
     module: {
-        rules: [{ test: /\.tsx?$/, loader: 'ts-loader' }],
+        rules: [
+            {
+                test: /\.tsx?$/,
+                loader: 'ts-loader',
+            },
+        ],
     },
 
     // Add the AWS SAM Webpack plugin
