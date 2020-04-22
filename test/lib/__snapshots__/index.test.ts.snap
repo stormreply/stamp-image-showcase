@@ -2,34 +2,6 @@
 
 exports[`Stack Snapshot 1`] = `
 Object {
-  "Outputs": Object {
-    "ApiEndpoint4F160690": Object {
-      "Value": Object {
-        "Fn::Join": Array [
-          "",
-          Array [
-            "https://",
-            Object {
-              "Ref": "ApiF70053CD",
-            },
-            ".execute-api.",
-            Object {
-              "Ref": "AWS::Region",
-            },
-            ".",
-            Object {
-              "Ref": "AWS::URLSuffix",
-            },
-            "/",
-            Object {
-              "Ref": "ApiDeploymentStageprod3EB9684E",
-            },
-            "/",
-          ],
-        ],
-      },
-    },
-  },
   "Parameters": Object {
     "AssetParameters485ef14fb263ee94a3ec89cdcb9ef1fc42d28e76e5fce99de78d35c9dba05ed9ArtifactHash262E5FAC": Object {
       "Description": "Artifact hash for asset \\"485ef14fb263ee94a3ec89cdcb9ef1fc42d28e76e5fce99de78d35c9dba05ed9\\"",
@@ -41,18 +13,6 @@ Object {
     },
     "AssetParameters485ef14fb263ee94a3ec89cdcb9ef1fc42d28e76e5fce99de78d35c9dba05ed9S3VersionKey496EB7EB": Object {
       "Description": "S3 key for asset version \\"485ef14fb263ee94a3ec89cdcb9ef1fc42d28e76e5fce99de78d35c9dba05ed9\\"",
-      "Type": "String",
-    },
-    "AssetParameters976b29a2dbe785df6cb739d60a7a04c9de2086179251549e86ae6c8e51d10b67ArtifactHashDC337EE3": Object {
-      "Description": "Artifact hash for asset \\"976b29a2dbe785df6cb739d60a7a04c9de2086179251549e86ae6c8e51d10b67\\"",
-      "Type": "String",
-    },
-    "AssetParameters976b29a2dbe785df6cb739d60a7a04c9de2086179251549e86ae6c8e51d10b67S3BucketE0FD6E24": Object {
-      "Description": "S3 bucket for asset \\"976b29a2dbe785df6cb739d60a7a04c9de2086179251549e86ae6c8e51d10b67\\"",
-      "Type": "String",
-    },
-    "AssetParameters976b29a2dbe785df6cb739d60a7a04c9de2086179251549e86ae6c8e51d10b67S3VersionKeyFE3FC5CE": Object {
-      "Description": "S3 key for asset version \\"976b29a2dbe785df6cb739d60a7a04c9de2086179251549e86ae6c8e51d10b67\\"",
       "Type": "String",
     },
     "AssetParametersa9125fa9a40550c71cde90bd478cc23091e868067a12380c1df0827d013ad2ffArtifactHash08605F5E": Object {
@@ -67,23 +27,174 @@ Object {
       "Description": "S3 key for asset version \\"a9125fa9a40550c71cde90bd478cc23091e868067a12380c1df0827d013ad2ff\\"",
       "Type": "String",
     },
+    "AssetParametersbbfd793c251d019812f5e67db8e9cf9483daf9a22a65f89d003527775598c25fArtifactHash858BA4A7": Object {
+      "Description": "Artifact hash for asset \\"bbfd793c251d019812f5e67db8e9cf9483daf9a22a65f89d003527775598c25f\\"",
+      "Type": "String",
+    },
+    "AssetParametersbbfd793c251d019812f5e67db8e9cf9483daf9a22a65f89d003527775598c25fS3Bucket6F11E8AD": Object {
+      "Description": "S3 bucket for asset \\"bbfd793c251d019812f5e67db8e9cf9483daf9a22a65f89d003527775598c25f\\"",
+      "Type": "String",
+    },
+    "AssetParametersbbfd793c251d019812f5e67db8e9cf9483daf9a22a65f89d003527775598c25fS3VersionKeyB84004E6": Object {
+      "Description": "S3 key for asset version \\"bbfd793c251d019812f5e67db8e9cf9483daf9a22a65f89d003527775598c25f\\"",
+      "Type": "String",
+    },
   },
   "Resources": Object {
-    "ApiAccountA18C9B29": Object {
+    "Application": Object {
+      "Properties": Object {
+        "Location": Object {
+          "ApplicationId": "arn:aws:serverlessrepo:us-east-1:145266761615:applications/image-magick-lambda-layer",
+          "SemanticVersion": "1.0.0",
+        },
+      },
+      "Type": "AWS::Serverless::Application",
+    },
+    "Bucket83908E77": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "BucketEncryption": Object {
+          "ServerSideEncryptionConfiguration": Array [
+            Object {
+              "ServerSideEncryptionByDefault": Object {
+                "SSEAlgorithm": "AES256",
+              },
+            },
+          ],
+        },
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "BucketNotifications8F2E257D": Object {
       "DependsOn": Array [
-        "ApiF70053CD",
+        "FunctionAllowBucketNotificationsFromMyTestStackBucketA865EC6BDC2C107D",
       ],
       "Properties": Object {
-        "CloudWatchRoleArn": Object {
+        "BucketName": Object {
+          "Ref": "Bucket83908E77",
+        },
+        "NotificationConfiguration": Object {
+          "LambdaFunctionConfigurations": Array [
+            Object {
+              "Events": Array [
+                "s3:ObjectCreated:*",
+              ],
+              "Filter": Object {
+                "Key": Object {
+                  "FilterRules": Array [
+                    Object {
+                      "Name": "prefix",
+                      "Value": "input/",
+                    },
+                  ],
+                },
+              },
+              "LambdaFunctionArn": Object {
+                "Fn::GetAtt": Array [
+                  "Function76856677",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+        },
+        "ServiceToken": Object {
           "Fn::GetAtt": Array [
-            "ApiCloudWatchRole73EC6FC4",
+            "BucketNotificationsHandler050a0587b7544547bf325f094a3db8347ECC3691",
             "Arn",
           ],
         },
       },
-      "Type": "AWS::ApiGateway::Account",
+      "Type": "Custom::S3BucketNotifications",
     },
-    "ApiCloudWatchRole73EC6FC4": Object {
+    "BucketNotificationsHandler050a0587b7544547bf325f094a3db8347ECC3691": Object {
+      "DependsOn": Array [
+        "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36",
+        "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "ZipFile": "exports.handler = (event, context) => {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports, import/no-extraneous-dependencies
+    const s3 = new (require('aws-sdk').S3)();
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const https = require('https');
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const url = require('url');
+    log(JSON.stringify(event, undefined, 2));
+    const props = event.ResourceProperties;
+    if (event.RequestType === 'Delete') {
+        props.NotificationConfiguration = {}; // this is how you clean out notifications
+    }
+    const req = {
+        Bucket: props.BucketName,
+        NotificationConfiguration: props.NotificationConfiguration,
+    };
+    return s3.putBucketNotificationConfiguration(req, (err, data) => {
+        log({ err, data });
+        if (err) {
+            return submitResponse('FAILED', err.message + \`\\\\nMore information in CloudWatch Log Stream: \${context.logStreamName}\`);
+        }
+        else {
+            return submitResponse('SUCCESS');
+        }
+    });
+    function log(obj) {
+        console.error(event.RequestId, event.StackId, event.LogicalResourceId, obj);
+    }
+    // tslint:disable-next-line:max-line-length
+    // adapted from https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-lambda-function-code.html#cfn-lambda-function-code-cfnresponsemodule
+    // to allow sending an error messge as a reason.
+    function submitResponse(responseStatus, reason) {
+        const responseBody = JSON.stringify({
+            Status: responseStatus,
+            Reason: reason || 'See the details in CloudWatch Log Stream: ' + context.logStreamName,
+            PhysicalResourceId: event.PhysicalResourceId || event.LogicalResourceId,
+            StackId: event.StackId,
+            RequestId: event.RequestId,
+            LogicalResourceId: event.LogicalResourceId,
+            NoEcho: false,
+        });
+        log({ responseBody });
+        const parsedUrl = url.parse(event.ResponseURL);
+        const options = {
+            hostname: parsedUrl.hostname,
+            port: 443,
+            path: parsedUrl.path,
+            method: 'PUT',
+            headers: {
+                'content-type': '',
+                'content-length': responseBody.length,
+            },
+        };
+        const request = https.request(options, (r) => {
+            log({ statusCode: r.statusCode, statusMessage: r.statusMessage });
+            context.done();
+        });
+        request.on('error', (error) => {
+            log({ sendError: error });
+            context.done();
+        });
+        request.write(responseBody);
+        request.end();
+    }
+};",
+        },
+        "Description": "AWS CloudFormation handler for \\"Custom::S3BucketNotifications\\" resources (@aws-cdk/aws-s3)",
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs10.x",
+        "Timeout": 300,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -91,7 +202,7 @@ Object {
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
               "Principal": Object {
-                "Service": "apigateway.amazonaws.com",
+                "Service": "lambda.amazonaws.com",
               },
             },
           ],
@@ -106,7 +217,7 @@ Object {
                 Object {
                   "Ref": "AWS::Partition",
                 },
-                ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs",
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
               ],
             ],
           },
@@ -114,272 +225,26 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "ApiDeploymentB17BE62D370b12aa69065625771b903ed90a406a": Object {
-      "DependsOn": Array [
-        "ApiGET9257B917",
-      ],
+    "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36": Object {
       "Properties": Object {
-        "Description": "Automatically created by the RestApi construct",
-        "RestApiId": Object {
-          "Ref": "ApiF70053CD",
-        },
-      },
-      "Type": "AWS::ApiGateway::Deployment",
-    },
-    "ApiDeploymentStageprod3EB9684E": Object {
-      "Properties": Object {
-        "DeploymentId": Object {
-          "Ref": "ApiDeploymentB17BE62D370b12aa69065625771b903ed90a406a",
-        },
-        "RestApiId": Object {
-          "Ref": "ApiF70053CD",
-        },
-        "StageName": "prod",
-      },
-      "Type": "AWS::ApiGateway::Stage",
-    },
-    "ApiF70053CD": Object {
-      "Properties": Object {
-        "Description": "This service stamps images.",
-        "Name": "Stamp Image",
-      },
-      "Type": "AWS::ApiGateway::RestApi",
-    },
-    "ApiGET9257B917": Object {
-      "Properties": Object {
-        "AuthorizationType": "NONE",
-        "HttpMethod": "GET",
-        "Integration": Object {
-          "IntegrationHttpMethod": "POST",
-          "RequestTemplates": Object {
-            "application/json": "{ \\"statusCode\\": \\"200\\" }",
-          },
-          "Type": "AWS_PROXY",
-          "Uri": Object {
-            "Fn::Join": Array [
-              "",
-              Array [
-                "arn:",
-                Object {
-                  "Ref": "AWS::Partition",
-                },
-                ":apigateway:",
-                Object {
-                  "Ref": "AWS::Region",
-                },
-                ":lambda:path/2015-03-31/functions/",
-                Object {
-                  "Fn::GetAtt": Array [
-                    "Function76856677",
-                    "Arn",
-                  ],
-                },
-                "/invocations",
-              ],
-            ],
-          },
-        },
-        "ResourceId": Object {
-          "Fn::GetAtt": Array [
-            "ApiF70053CD",
-            "RootResourceId",
-          ],
-        },
-        "RestApiId": Object {
-          "Ref": "ApiF70053CD",
-        },
-      },
-      "Type": "AWS::ApiGateway::Method",
-    },
-    "ApiGETApiPermissionMyTestStackApi4E22822FGET4631A19C": Object {
-      "Properties": Object {
-        "Action": "lambda:InvokeFunction",
-        "FunctionName": Object {
-          "Fn::GetAtt": Array [
-            "Function76856677",
-            "Arn",
-          ],
-        },
-        "Principal": "apigateway.amazonaws.com",
-        "SourceArn": Object {
-          "Fn::Join": Array [
-            "",
-            Array [
-              "arn:",
-              Object {
-                "Ref": "AWS::Partition",
-              },
-              ":execute-api:",
-              Object {
-                "Ref": "AWS::Region",
-              },
-              ":",
-              Object {
-                "Ref": "AWS::AccountId",
-              },
-              ":",
-              Object {
-                "Ref": "ApiF70053CD",
-              },
-              "/",
-              Object {
-                "Ref": "ApiDeploymentStageprod3EB9684E",
-              },
-              "/GET/",
-            ],
-          ],
-        },
-      },
-      "Type": "AWS::Lambda::Permission",
-    },
-    "ApiGETApiPermissionTestMyTestStackApi4E22822FGETF9D7F565": Object {
-      "Properties": Object {
-        "Action": "lambda:InvokeFunction",
-        "FunctionName": Object {
-          "Fn::GetAtt": Array [
-            "Function76856677",
-            "Arn",
-          ],
-        },
-        "Principal": "apigateway.amazonaws.com",
-        "SourceArn": Object {
-          "Fn::Join": Array [
-            "",
-            Array [
-              "arn:",
-              Object {
-                "Ref": "AWS::Partition",
-              },
-              ":execute-api:",
-              Object {
-                "Ref": "AWS::Region",
-              },
-              ":",
-              Object {
-                "Ref": "AWS::AccountId",
-              },
-              ":",
-              Object {
-                "Ref": "ApiF70053CD",
-              },
-              "/test-invoke-stage/GET/",
-            ],
-          ],
-        },
-      },
-      "Type": "AWS::Lambda::Permission",
-    },
-    "Bucket83908E77": Object {
-      "DeletionPolicy": "Retain",
-      "Properties": Object {
-        "BucketEncryption": Object {
-          "ServerSideEncryptionConfiguration": Array [
-            Object {
-              "ServerSideEncryptionByDefault": Object {
-                "KMSMasterKeyID": Object {
-                  "Fn::GetAtt": Array [
-                    "BucketKey7E4AEAB8",
-                    "Arn",
-                  ],
-                },
-                "SSEAlgorithm": "aws:kms",
-              },
-            },
-          ],
-        },
-      },
-      "Type": "AWS::S3::Bucket",
-      "UpdateReplacePolicy": "Retain",
-    },
-    "BucketKey7E4AEAB8": Object {
-      "DeletionPolicy": "Retain",
-      "Properties": Object {
-        "Description": "Created by MyTestStack/Bucket",
-        "KeyPolicy": Object {
+        "PolicyDocument": Object {
           "Statement": Array [
             Object {
-              "Action": Array [
-                "kms:Create*",
-                "kms:Describe*",
-                "kms:Enable*",
-                "kms:List*",
-                "kms:Put*",
-                "kms:Update*",
-                "kms:Revoke*",
-                "kms:Disable*",
-                "kms:Get*",
-                "kms:Delete*",
-                "kms:ScheduleKeyDeletion",
-                "kms:CancelKeyDeletion",
-                "kms:GenerateDataKey",
-                "kms:TagResource",
-                "kms:UntagResource",
-              ],
+              "Action": "s3:PutBucketNotification",
               "Effect": "Allow",
-              "Principal": Object {
-                "AWS": Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:",
-                      Object {
-                        "Ref": "AWS::Partition",
-                      },
-                      ":iam::",
-                      Object {
-                        "Ref": "AWS::AccountId",
-                      },
-                      ":root",
-                    ],
-                  ],
-                },
-              },
-              "Resource": "*",
-            },
-            Object {
-              "Action": Array [
-                "kms:Decrypt",
-                "kms:DescribeKey",
-                "kms:Encrypt",
-                "kms:ReEncrypt*",
-                "kms:GenerateDataKey*",
-              ],
-              "Effect": "Allow",
-              "Principal": Object {
-                "AWS": Object {
-                  "Fn::GetAtt": Array [
-                    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265",
-                    "Arn",
-                  ],
-                },
-              },
-              "Resource": "*",
-            },
-            Object {
-              "Action": Array [
-                "kms:Decrypt",
-                "kms:DescribeKey",
-                "kms:Encrypt",
-                "kms:ReEncrypt*",
-                "kms:GenerateDataKey*",
-              ],
-              "Effect": "Allow",
-              "Principal": Object {
-                "AWS": Object {
-                  "Fn::GetAtt": Array [
-                    "FunctionServiceRole675BB04A",
-                    "Arn",
-                  ],
-                },
-              },
               "Resource": "*",
             },
           ],
           "Version": "2012-10-17",
         },
+        "PolicyName": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36",
+        "Roles": Array [
+          Object {
+            "Ref": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC",
+          },
+        ],
       },
-      "Type": "AWS::KMS::Key",
-      "UpdateReplacePolicy": "Retain",
+      "Type": "AWS::IAM::Policy",
     },
     "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536": Object {
       "DependsOn": Array [
@@ -546,22 +411,6 @@ Object {
                 },
               ],
             },
-            Object {
-              "Action": Array [
-                "kms:Decrypt",
-                "kms:DescribeKey",
-                "kms:Encrypt",
-                "kms:ReEncrypt*",
-                "kms:GenerateDataKey*",
-              ],
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::GetAtt": Array [
-                  "BucketKey7E4AEAB8",
-                  "Arn",
-                ],
-              },
-            },
           ],
           "Version": "2012-10-17",
         },
@@ -638,7 +487,7 @@ Object {
       "Properties": Object {
         "Code": Object {
           "S3Bucket": Object {
-            "Ref": "AssetParameters976b29a2dbe785df6cb739d60a7a04c9de2086179251549e86ae6c8e51d10b67S3BucketE0FD6E24",
+            "Ref": "AssetParametersbbfd793c251d019812f5e67db8e9cf9483daf9a22a65f89d003527775598c25fS3Bucket6F11E8AD",
           },
           "S3Key": Object {
             "Fn::Join": Array [
@@ -651,7 +500,7 @@ Object {
                       "Fn::Split": Array [
                         "||",
                         Object {
-                          "Ref": "AssetParameters976b29a2dbe785df6cb739d60a7a04c9de2086179251549e86ae6c8e51d10b67S3VersionKeyFE3FC5CE",
+                          "Ref": "AssetParametersbbfd793c251d019812f5e67db8e9cf9483daf9a22a65f89d003527775598c25fS3VersionKeyB84004E6",
                         },
                       ],
                     },
@@ -664,7 +513,7 @@ Object {
                       "Fn::Split": Array [
                         "||",
                         Object {
-                          "Ref": "AssetParameters976b29a2dbe785df6cb739d60a7a04c9de2086179251549e86ae6c8e51d10b67S3VersionKeyFE3FC5CE",
+                          "Ref": "AssetParametersbbfd793c251d019812f5e67db8e9cf9483daf9a22a65f89d003527775598c25fS3VersionKeyB84004E6",
                         },
                       ],
                     },
@@ -675,15 +524,47 @@ Object {
           },
         },
         "Handler": "app.handler",
+        "Layers": Array [
+          Object {
+            "Fn::GetAtt": Array [
+              "Application",
+              "Outputs.LayerVersion",
+            ],
+          },
+        ],
+        "MemorySize": 1024,
         "Role": Object {
           "Fn::GetAtt": Array [
             "FunctionServiceRole675BB04A",
             "Arn",
           ],
         },
-        "Runtime": "nodejs12.x",
+        "Runtime": "nodejs10.x",
+        "Timeout": 60,
       },
       "Type": "AWS::Lambda::Function",
+    },
+    "FunctionAllowBucketNotificationsFromMyTestStackBucketA865EC6BDC2C107D": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "Function76856677",
+            "Arn",
+          ],
+        },
+        "Principal": "s3.amazonaws.com",
+        "SourceAccount": Object {
+          "Ref": "AWS::AccountId",
+        },
+        "SourceArn": Object {
+          "Fn::GetAtt": Array [
+            "Bucket83908E77",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
     },
     "FunctionServiceRole675BB04A": Object {
       "Properties": Object {
@@ -753,22 +634,6 @@ Object {
                 },
               ],
             },
-            Object {
-              "Action": Array [
-                "kms:Decrypt",
-                "kms:DescribeKey",
-                "kms:Encrypt",
-                "kms:ReEncrypt*",
-                "kms:GenerateDataKey*",
-              ],
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::GetAtt": Array [
-                  "BucketKey7E4AEAB8",
-                  "Arn",
-                ],
-              },
-            },
           ],
           "Version": "2012-10-17",
         },
@@ -782,5 +647,6 @@ Object {
       "Type": "AWS::IAM::Policy",
     },
   },
+  "Transform": "AWS::Serverless-2016-10-31",
 }
 `;

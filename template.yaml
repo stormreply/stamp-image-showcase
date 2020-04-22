@@ -7,4 +7,4 @@ Resources:
         Properties:
             CodeUri: lambda/stamp-image
             Handler: index.handler
-            Runtime: nodejs12.x
+            Runtime: nodejs10.x
