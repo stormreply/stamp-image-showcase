@@ -1,6 +1,6 @@
 import * as cdk from '@aws-cdk/core';
 
-import { StampImageLamnbda, StampImageBucket, StampImageBucketDeployment } from './stamp-image';
+import { StampImageLamnbda, StampImageBucket } from './stamp-image';
 
 export class StampImageStack extends cdk.Stack {
     constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
@@ -15,14 +15,8 @@ export class StampImageStack extends cdk.Stack {
         });
 
         // 2. Create s3 bucket as image source and target
-        const destinationBucket = new StampImageBucket(this, 'Bucket', {
+        new StampImageBucket(this, 'Bucket', {
             handler,
-        });
-
-        // 3. Initialise s3 bucket with needed folders and stamp image
-        new StampImageBucketDeployment(this, 'BucketDeployment', {
-            source: 'stamp-image',
-            destinationBucket,
         });
     }
 }
