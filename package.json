@@ -1,6 +1,13 @@
 {
     "name": "stamp-image",
-    "version": "0.1.0",
+    "version": "0.0.0-development",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/stormreply/stamp-image-showcase.git"
+    },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com/"
+    },
     "bin": {
         "stamp-image": "bin/index.js"
     },
@@ -22,6 +29,7 @@
         "git-cz": "npx git-cz",
         "lint": "tsc --noEmit && eslint '*/**/*.{js,ts}' --quiet",
         "lint:fix": "npm run lint -- --fix",
+        "semantic-release": "semantic-release",
         "prebuild-lambda": "rimraf .aws-sam",
         "prebuild-lamda:watch": "rimraf .aws-sam",
         "test": "jest --coverage",
@@ -32,7 +40,8 @@
         "hooks": {
             "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true",
             "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-            "pre-commit": "tsc --noEmit && lint-staged"
+            "pre-commit": "tsc --noEmit && lint-staged",
+            "pre-push": "git diff HEAD --quiet && npm test"
         }
     },
     "lint-staged": {
@@ -51,6 +60,8 @@
         "@aws-cdk/assert": "1.36.1",
         "@commitlint/cli": "^8.3.5",
         "@commitlint/config-conventional": "^8.3.4",
+        "@semantic-release/changelog": "^5.0.1",
+        "@semantic-release/git": "^9.0.0",
         "@types/aws-lambda": "^8.10.51",
         "@types/jest": "^25.2.1",
         "@types/lambda-tester": "^3.6.0",
@@ -74,6 +85,7 @@
         "lint-staged": "^10.2.2",
         "npm-run-all": "^4.1.5",
         "prettier": "^2.0.5",
+        "semantic-release": "^17.0.7",
         "ts-jest": "^25.4.0",
         "ts-loader": "^7.0.2",
         "ts-node": "^8.9.1",
