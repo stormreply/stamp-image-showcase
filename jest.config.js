@@ -1,6 +1,7 @@
 module.exports = {
     roots: ['<rootDir>/test'],
     testMatch: ['**/*.test.ts'],
+    testResultsProcessor: 'jest-sonar-reporter',
     transform: {
         '^.+\\.tsx?$': 'ts-jest',
     },

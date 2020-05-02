@@ -22,6 +22,8 @@ cdk.out
 !.vscode/launch.json
 !.vscode/launch.json
 
+test-report.xml
+
 # Created by https://www.gitignore.io/api/osx,node,linux,windows
 
 ### Linux ###
