@@ -8,7 +8,10 @@ jobs:
         if: contains(github.event.commits[0].message, '[skip ci]') == false
         runs-on: ubuntu-18.04
         steps:
-            - uses: actions/checkout@v1
+            - name: Checkout
+              uses: actions/checkout@v2
+              with:
+                  persist-credentials: false
             - name: Use Node.js 12.x
               uses: actions/setup-node@v1
               with:
