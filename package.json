@@ -68,7 +68,7 @@
         "@types/node": "^13.13.4",
         "@typescript-eslint/eslint-plugin": "^2.30.0",
         "@typescript-eslint/parser": "^2.30.0",
-        "aws-cdk": "1.36.1",
+        "aws-cdk": "1.203.0",
         "aws-sam-webpack-plugin": "^0.6.0",
         "aws-sdk-mock": "^5.1.0",
         "commitizen": "^4.0.5",
